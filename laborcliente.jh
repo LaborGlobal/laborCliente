@@ -6,7 +6,7 @@ entity Cliente {
 }
 
 entity Servicio {
-	cliente Cliente,
+	
 	servicioName String,
     valor ValorHora,
     tipo ServicioTipo,
@@ -32,7 +32,7 @@ entity Producto {
 }
 
 entity Pago {
-	cliente Cliente,
+	
     fecha LocalDate,
     monto BigDecimal,
     procesado LocalDate,
@@ -40,14 +40,16 @@ entity Pago {
 }
 
 entity Cobranza {
-	producto Producto,
-	servicio Servicio,
+	tipo TipoCobranza,
     vencimiento LocalDate,
-    
+}
+
+enum TipoCobranza{
+	UNICA, MENSUAL, SEMESTRAL, ANUAL
 }
 
 entity Presupuesto {
-	cliente Cliente,
+	
     plazo String,
     requerimiento Blob,
     solucion Blob,
@@ -57,8 +59,7 @@ entity Presupuesto {
     minPrecio BigDecimal,
     maxPrecio BigDecimal,
     total BigDecimal,
-    estado EstadoPresupuesto,
-    cupon Cupon
+    estado EstadoPresupuesto
 }
 
 entity Cupon {
