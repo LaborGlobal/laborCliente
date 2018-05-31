@@ -1,0 +1,124 @@
+
+entity Cliente {
+	clienteName String,
+    web String,
+    cuit Integer
+}
+
+entity Servicio {
+	cliente Cliente,
+	servicioName String,
+    valor ValorHora,
+    tipo ServicioTipo,
+    ini LocalDate,
+    fin LocalDate
+}
+
+entity ValorHora {
+	codigo String,
+    descripcion String,
+    valor BigDecimal
+}
+
+// an ignored comment
+/** not an ignored comment */
+entity Producto {
+	productoName String,
+	descripcion String,
+	diagrama ImageBlob,
+	tecnologias String,
+    plataforma String,
+    repositorioUrl String
+}
+
+entity Pago {
+	cliente Cliente,
+    fecha LocalDate,
+    monto BigDecimal,
+    procesado LocalDate,
+    asentado LocalDate
+}
+
+entity Cobranza {
+	producto Producto,
+	servicio Servicio,
+    vencimiento LocalDate,
+    
+}
+
+entity Presupuesto {
+	cliente Cliente,
+    plazo String,
+    requerimiento Blob,
+    solucion Blob,
+    plazo String,
+    entrega LocalDate,
+    horasEstimadas Integer,
+    minPrecio BigDecimal,
+    maxPrecio BigDecimal,
+    total BigDecimal,
+    estado EstadoPresupuesto,
+    cupon Cupon
+}
+
+entity Cupon {
+cuponName String,
+descripcion String,
+tipo String,
+codigo String,
+ini LocalDate,
+fin LocalDate,
+descuento BigDecimal
+}
+
+entity Ambiente {
+sistemaOperativo String,
+lenguaje String,
+dataBase String
+}
+
+enum ServicioTipo {
+	HORAS, FEATURE, OBJETIVO
+}
+
+
+enum EstadoPresupuesto {
+	FINALIZADO, ABROBADO, RECHAZADO, ENVIADO, CREADO 
+}
+
+relationship OneToOne {
+	Producto{ambiente} to Ambiente,
+    Servicio{ambiente} to Ambiente,
+    Presupuesto{valorHora} to ValorHora 
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Cliente{producto} to Producto,
+	Cliente{presupuesto} to Presupuesto,
+    Cliente{servicio} to Servicio,
+    Cliente{pago} to Pago,
+    Cliente{cobranza} to Cobranza,
+    Cliente{ambiente} to Ambiente,
+	Cupon{cliente} to Cliente,
+    Cupon{producto} to Producto,
+    Cupon{servicio} to Servicio
+    
+}
+
+
+
+// Set pagination options
+paginate ValorHora, Cupon, Ambiente with infinite-scroll
+paginate 
+Pago, Cobranza, 
+Presupuesto, Cliente ,
+Producto, Servicio
+with pagination
+
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Employee, Job
+// Set an angular suffix
+angularSuffix * with lgc
